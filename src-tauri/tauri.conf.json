@@ -15,7 +15,14 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "globalShortcut": {
+        "all": true
       }
+    },
+    "systemTray": {
+      "iconPath":"icons/icon.png",
+      "iconAsTemplate": true
     },
     "windows": [
       {
