@@ -6,21 +6,17 @@ const messaging = useMessageStore()
 
 const userMsgField = ref("")
 
-const props = defineProps<{
-  query_function: Function,
-}>();
-
-const handleSubmit = () => {
-  console.log("Called handleSubmit")
-  messaging.addMessage('user', userMsgField.value)
-  props.query_function()
+const handleSubmit = async () => {
+  if (userMsgField.value)
+    await messaging.addMessage("user", userMsgField.value)
+  await messaging.sendMessages()
 }
 </script>
 <template>
   <div class="container">
-    <form class="flex-1 justify-center" @submit.prevent="handleSubmit">
-      <input v-model="userMsgField" class="flex-1" placeholder="Ask your question..."></input>
-      <button class="send-btn" type="submit">|></button>
+    <form @submit.prevent="handleSubmit">
+      <textarea rows="4" v-model="userMsgField" class="user-input" placeholder="Ask your question..."></textarea>
+      <button class="submit-btn" type="submit"><i class="ri-send-plane-2-line ri-xl"/></button>
     </form>
   </div>
 </template>
@@ -28,10 +24,18 @@ const handleSubmit = () => {
 
 <style>
 .container {
-  @apply flex-1 shadow-md border border-gray-300 rounded;
+  @apply relative border-gray-500 rounded mr-2;
 }
 
-.send-btn {
-  @apply p-2 text-white bg-black rounded-md
+.container textarea {
+  @apply border-2 p-2 rounded-md;
+}
+
+.submit-btn {
+  @apply absolute bottom-5 right-5 hover:text-purple-500 transition-all ;
+}
+
+.user-input {
+  @apply resize-y w-full;
 }
 </style>

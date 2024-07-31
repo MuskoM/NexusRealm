@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/tauri";
-import {useMessageStore} from './stores/messageStore.ts'
+import { useMessageStore } from './stores/messageStore.ts'
 import QueryInput from "./components/QueryInput.vue"
+import MessageBox from "./components/MessageBox.vue";
+import { Message } from "./types/messaging.ts";
 
 const messaging = useMessageStore();
+const messages: Message[] = messaging.messages;
 
-const messages = messaging.messages;
 
-async function query_model() {
-  console.log("Query_sent")
-  output.value = await invoke("send_query", { query: "Hello" });
-}
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
-    <p v-for="msg in messages">{{msg.text}}</p>
-    <QueryInput :query_function=query_model></QueryInput>
+    <div class="m-2">
+      <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
+        {{ msg.content }}
+      </MessageBox>
+    <QueryInput class="mt-2 ml-2"></QueryInput>
   </div>
 </template>
