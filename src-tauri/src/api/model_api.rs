@@ -1,7 +1,6 @@
 use serde_json::json;
 
-use crate::models::messaging::{self as msg, AnthropicMessage, AnthropicResponse, MessageType};
-const API_KEY: &str = "";
+use crate::models::messaging::{self as msg, AnthropicMessage, MessageType};
 
 #[tauri::command]
 pub async fn send_messages_to_model(
@@ -13,10 +12,6 @@ pub async fn send_messages_to_model(
         std::process::exit(1);
     });
     println!("{:?}", model_name);
-    let model = match model_name {
-        Some(name) => name,
-        _ => "gpt-4o-mini".to_string(),
-    };
 
     let client = reqwest::Client::new();
     let response = client.post("https://api.anthropic.com/v1/messages")
