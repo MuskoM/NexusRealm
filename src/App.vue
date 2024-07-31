@@ -6,15 +6,34 @@ import { Message } from "./types/messaging.ts";
 
 const messaging = useMessageStore();
 const messages: Message[] = messaging.messages;
-
-
 </script>
 
 <template>
-    <div class="m-2">
+  <div class="app-body">
+    <div class="ability-router">
+      <p>Ability A</p>
+      <p>Ability B</p>
+    </div>
+    <div class="ability">
       <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
         {{ msg.content }}
       </MessageBox>
-    <QueryInput class="mt-2 ml-2"></QueryInput>
+     <QueryInput class="user-input"></QueryInput>
+    </div>
   </div>
+
 </template>
+
+<style>
+.app-body {
+  @apply flex h-full flex-row justify-evenly bg-stone-800 text-white;
+}
+
+.ability-router {
+  @apply flex flex-col p-4 
+}
+
+.ability {
+  @apply flex-1 overflow-auto p-5;
+}
+</style>

@@ -32,7 +32,7 @@ export const useMessageStore = defineStore('message', () => {
   }
 
   const removeMessage = async (id: number): Promise<Message[]> => {
-    return messages.value.splice(id)
+    return messages.value.splice(id, 1)
   }
 
   return {messages, userMessages, addMessage, sendMessages, removeMessage}

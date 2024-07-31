@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import {useMessageStore} from '../stores/messageStore.ts'
+import { ref } from 'vue'
+import { useMessageStore } from '../stores/messageStore.ts'
 
 const messaging = useMessageStore()
 
@@ -13,26 +13,20 @@ const handleSubmit = async () => {
 }
 </script>
 <template>
-  <div class="container">
-    <form @submit.prevent="handleSubmit">
-      <textarea rows="4" v-model="userMsgField" class="user-input" placeholder="Ask your question..."></textarea>
-      <button class="submit-btn" type="submit"><i class="ri-send-plane-2-line ri-xl"/></button>
-    </form>
-  </div>
+  <form class="relative" @submit.prevent="handleSubmit">
+    <textarea rows="4" v-model="userMsgField" class="user-input" placeholder="Ask your question..."></textarea>
+    <button class="submit-btn" type="submit"><i class="ri-send-plane-2-line ri-xl" /></button>
+  </form>
 </template>
 
 
 <style>
-.container {
-  @apply relative border-gray-500 rounded mr-2;
-}
-
-.container textarea {
-  @apply border-2 p-2 rounded-md;
+form textarea {
+  @apply p-2 bg-stone-700 shadow-md shadow-purple-600 focus:ring-0 focus:outline-none focus:shadow-xl focus:shadow-purple-500 transition-colors transition-shadow duration-300;
 }
 
 .submit-btn {
-  @apply absolute bottom-5 right-5 hover:text-purple-500 transition-all ;
+  @apply absolute bottom-5 right-5 hover:text-purple-500 transition-all;
 }
 
 .user-input {

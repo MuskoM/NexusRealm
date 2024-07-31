@@ -34,7 +34,7 @@ const removeMessageFromList = async () => {
 
 <style>
 .outer {
-    @apply w-full border-2 p-1 pt-3 rounded-md;
+    @apply w-full shadow-md shadow-purple-900 mb-1 p-1 pt-3;
 }
 
 .text-wrapper {
