@@ -7,7 +7,7 @@ pub async fn send_messages_to_model(
     messages: Vec<msg::Message>,
     model_name: Option<String>,
 ) -> Result<String, String> {
-    let api_key: String = std::env::var("ANTHROPIC_AI_KEY").unwrap_or_else(|_| {
+    let api_key: String = std::env::var("ANTHROPIC_API_KEY").unwrap_or_else(|_| {
         eprintln!("ANTHROPIC_API_KEY not set in environment");
         std::process::exit(1);
     });
@@ -21,7 +21,6 @@ pub async fn send_messages_to_model(
         .json(&json!({
             "model": "claude-3-5-sonnet-20240620",
             "max_tokens": 1024,
-            "system": messages.iter().find(|&x| x.role == MessageType::System).unwrap().content,
             "messages": messages.iter().filter(|x| x.role != MessageType::System).map(|x| AnthropicMessage::from(x)).collect::<Vec<_>>()
         }))
         .send()

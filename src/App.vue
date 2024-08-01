@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { useMessageStore } from './stores/messageStore.ts'
-import QueryInput from "./components/QueryInput.vue"
-import MessageBox from "./components/MessageBox.vue";
-import { Message } from "./types/messaging.ts";
-
-const messaging = useMessageStore();
-const messages: Message[] = messaging.messages;
+import Button from './components/Button.vue';
+import Sandbox from './views/Sandbox.vue';
 </script>
 
 <template>
   <div class="app-body">
     <div class="ability-router">
-      <p>Ability A</p>
-      <p>Ability B</p>
+      <Button :background="true"><img width="64px" height="64px" src="./assets/feather.svg"/></Button>
     </div>
     <div class="ability">
-      <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
-        {{ msg.content }}
-      </MessageBox>
-     <QueryInput class="user-input"></QueryInput>
+      <Sandbox/>
     </div>
   </div>
 
@@ -30,10 +21,10 @@ const messages: Message[] = messaging.messages;
 }
 
 .ability-router {
-  @apply flex flex-col p-4 
+  @apply flex flex-col pt-3 pl-3
 }
 
 .ability {
-  @apply flex-1 overflow-auto p-5;
+  @apply flex-1 overflow-auto p-3;
 }
 </style>

@@ -5,7 +5,6 @@ import {type Message} from '../types/messaging.ts'
 
 export const useMessageStore = defineStore('message', () => {
   const messages = ref<Message[]>([
-    {sentOn: new Date(), role: 'system', content: 'You are knowledgable in geography, respond only for geography related questions'},
   ])
 
   const userMessages = computed(()=> messages.value.filter(msg=>msg.role === 'user'))
@@ -16,7 +15,7 @@ export const useMessageStore = defineStore('message', () => {
 
   const sendMessages = async (): Promise<void> => {
     // Prepare messages to send
-    console.log("Sent message to LLM");
+    console.log("Sent message to LLM", messages);
     let response = ""
     // Call an API
     try {
@@ -25,8 +24,6 @@ export const useMessageStore = defineStore('message', () => {
       response = "No response from model"
       console.error(e)
     }
-    
-    console.log("Response")
     // Add response to messages
     await addMessage('assistant', response)
   }

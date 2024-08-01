@@ -19,23 +19,27 @@ fn main() {
             _ => {}
         })
         .system_tray(initialize_tray())
-        .on_system_tray_event(|app, event | match event {
-            SystemTrayEvent::DoubleClick {position: _, size: _, .. } => {
+        .on_system_tray_event(|app, event| match event {
+            SystemTrayEvent::DoubleClick {
+                position: _,
+                size: _,
+                ..
+            } => {
                 let window = app.get_window("main").unwrap();
                 window.show().unwrap();
                 println!("Clicked")
             }
-            SystemTrayEvent::MenuItemClick { id, .. } => {
-                match id.as_str() {
-                    "quit" => {
-                        std::process::exit(0);
-                    },
-                    _ => {}
+            SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+                "quit" => {
+                    std::process::exit(0);
                 }
-            }
+                _ => {}
+            },
             _ => {}
         })
-        .invoke_handler(tauri::generate_handler![api::model_api::send_messages_to_model])
+        .invoke_handler(tauri::generate_handler![
+            api::model_api::send_messages_to_model
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

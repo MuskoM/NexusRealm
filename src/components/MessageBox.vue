@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useMessageStore} from '../stores/messageStore.ts'
+import Button from './Button.vue';
 
 const messaging = useMessageStore()
 const props = defineProps<{
@@ -15,7 +16,6 @@ const removeMessageFromList = async () => {
         console.error("Unable to delete message with id", props.msgId)
     }
 }
-
 </script>
 
 <template>
@@ -24,15 +24,15 @@ const removeMessageFromList = async () => {
             <div class="message-type-box">
                 {{ props.messageType }}
             </div>
-            <button @click="removeMessageFromList"><i class="ri-delete-bin-2-line"/></button>
+            <Button :background="true" @click="removeMessageFromList"><i class="ri-delete-bin-2-line"/></Button>
         </div>
         <div class="text-wrapper">
-            <slot />
+            <slot/>
         </div>
     </div>
 </template>
 
-<style>
+<style scoped>
 .outer {
     @apply w-full shadow-md shadow-purple-900 mb-1 p-1 pt-3;
 }
@@ -46,7 +46,7 @@ const removeMessageFromList = async () => {
 }
 
 .message-type-box {
-    @apply text-slate-400;
+    @apply text-purple-200 capitalize font-thin;
 }
 
 .close-btn {
