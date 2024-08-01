@@ -12,5 +12,5 @@ const messages: Message[] = messaging.messages;
       <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
         {{ msg.content }}
       </MessageBox>
-     <QueryInput class="user-input"></QueryInput>
+     <QueryInput></QueryInput>
 </template>

@@ -11,7 +11,7 @@ pub async fn send_messages_to_model(
         eprintln!("ANTHROPIC_API_KEY not set in environment");
         std::process::exit(1);
     });
-    println!("{:?}", model_name);
+    println!("{:?}", messages);
 
     let client = reqwest::Client::new();
     let response = client.post("https://api.anthropic.com/v1/messages")

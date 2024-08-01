@@ -44,6 +44,11 @@
         "unmaximize": false,
         "unminimize": false
       },
+      "clipboard": {
+        "all": true,
+        "readText": true,
+        "writeText": true
+      },
       "shell": {
         "all": false,
         "open": true

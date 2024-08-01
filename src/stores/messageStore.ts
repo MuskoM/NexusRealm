@@ -6,7 +6,7 @@ import {type Message} from '../types/messaging.ts'
 export const useMessageStore = defineStore('message', () => {
   const messages = ref<Message[]>([
   ])
-
+  const isWaitingForResponse = ref<boolean>(false);
   const userMessages = computed(()=> messages.value.filter(msg=>msg.role === 'user'))
 
   const addMessage = async (msgType: 'user' | 'system' | 'assistant', text: string) => {
@@ -18,6 +18,7 @@ export const useMessageStore = defineStore('message', () => {
     console.log("Sent message to LLM", messages);
     let response = ""
     // Call an API
+    console.log("MESSAGES SENT", messages.value)
     try {
       response = await invoke("send_messages_to_model", { messages: messages.value, modelName: "3.5-sonnet"});
     } catch (e) {
@@ -32,5 +33,15 @@ export const useMessageStore = defineStore('message', () => {
     return messages.value.splice(id, 1)
   }
 
-  return {messages, userMessages, addMessage, sendMessages, removeMessage}
+  const changeWaitingStatus = () => {
+    console.log("Change status from ", isWaitingForResponse.value)
+    if (isWaitingForResponse.value) {
+      isWaitingForResponse.value = false
+    } else {
+      isWaitingForResponse.value = true 
+    }
+    console.log("Change status to ", isWaitingForResponse.value)
+  }
+
+  return {messages, userMessages, addMessage, sendMessages, removeMessage, isWaitingForResponse, changeWaitingStatus}
 });

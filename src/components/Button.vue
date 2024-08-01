@@ -20,6 +20,6 @@
     }
 
     .bg-button {
-        @apply  rounded shadow-sm shadow-stone-500 p-1.5 hover:shadow-inner hover:shadow-purple-500;
+        @apply bg-stone-800 shadow-sm shadow-stone-500 p-1.5 hover:shadow-md hover:shadow-purple-800; 
     }
 </style>
