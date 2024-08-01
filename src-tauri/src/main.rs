@@ -38,7 +38,8 @@ fn main() {
             _ => {}
         })
         .invoke_handler(tauri::generate_handler![
-            api::model_api::send_messages_to_model
+            api::model_api::send_messages_to_model,
+            api::system_api::bring_app_to_foreground,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
