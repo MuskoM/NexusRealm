@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMessageStore } from '../stores/messageStore.ts'
-import Button from './Button.vue';
+import Button from './elements/Button.vue';
 import Spinner from './elements/Spinner.vue';
 
 const messaging = useMessageStore()

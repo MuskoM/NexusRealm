@@ -16,7 +16,7 @@
 
 <style scoped>
     button {
-        @apply transition-all duration-300 hover:text-purple-500; 
+        @apply transition-all duration-300 hover:text-purple-500 rounded-md; 
     }
 
     .bg-button {

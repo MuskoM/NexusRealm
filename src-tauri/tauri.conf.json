@@ -11,6 +11,9 @@
   },
   "tauri": {
     "allowlist": {
+      "fs": {
+        "scope": ["$RESOURCE/*"]
+      },
       "all": false,
       "window": {
         "all": false,
@@ -77,6 +80,9 @@
       "active": true,
       "targets": "all",
       "identifier": "com.tauri.dev",
+      "resources": [
+        "settings.yaml"
+      ],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

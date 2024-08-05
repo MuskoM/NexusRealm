@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useMessageStore} from '../stores/messageStore.ts'
-import Button from './Button.vue';
+import Button from './elements/Button.vue';
 
 const messaging = useMessageStore()
 const props = defineProps<{
