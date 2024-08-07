@@ -6,7 +6,7 @@ import QueryInput from "../components/QueryInput.vue"
 import { useMessageStore } from '../stores/messageStore.ts'
 import { Message } from "../types/messaging.ts";
 import { ref } from "vue";
-import DropdownSelector from "../components/elements/DropdownSelector.vue";
+import ModelSelector from "../components/ModelSelector.vue";
 
 const messaging = useMessageStore();
 const messages: Message[] = messaging.messages;
@@ -14,10 +14,12 @@ const sideBarRef = ref()
 
 const openSidebar = async () => {
   sideBarRef.value.changeSidebarState()
-  console.log(selection.value)
 }
 
-const selection = ref();
+const modelSelected = ref("");
+const onModelSelected = async (selection: string) => {
+  modelSelected.value = selection
+}
 
 </script>
 
@@ -31,11 +33,7 @@ const selection = ref();
       <QueryInput></QueryInput>
     </div>
     <Sidebar ref="sideBarRef">
-      <DropdownSelector v-model="selection">
-        <option selected value="lofi">Lofi</option>
-        <option value="hifi">Lofi</option>
-        <option value="midfi">Midfi</option>
-      </DropdownSelector>
+      <ModelSelector/>
     </Sidebar>
   </div>
 </template>

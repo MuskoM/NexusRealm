@@ -1,5 +1,5 @@
 export interface AppSettings {
-    ApiKeys: ApiKeys
+    apiKeys: ApiKeys
 }
 
 export enum AbilityType {
@@ -16,7 +16,7 @@ export interface Ability {
 }
 
 export interface ApiKeys {
-    openAI: string
+    openAi: string
     anthropic: string
     local: string
     customApi: string

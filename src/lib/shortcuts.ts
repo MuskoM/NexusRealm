@@ -23,7 +23,6 @@ const bring_to_foreground_cmd = async () => {
 const send_clipboard_to_model = async () => {
   const msgStore = useMessageStore();
   const content = await readText();
-  console.log("MESSAGE FROM CLIPBOARD before: ", msgStore.messages)
   if (content) {
     //Fix: Brutal fix for working with Anthropic models, remove at a later date
     const nextRole = msgStore.messages[msgStore.messages.length - 1].role == 'user' ? 'assistant' : 'user'
@@ -42,7 +41,6 @@ const cmds: Command[] = [
 
 cmds.forEach(async (command: Command)=> {
   if (!await globalShortcut.isRegistered(command.shortcut)) {
-    console.log(command)
     await globalShortcut.register(command.shortcut,command.handler)
   }
   else

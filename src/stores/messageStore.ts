@@ -15,10 +15,8 @@ export const useMessageStore = defineStore('message', () => {
 
   const sendMessages = async (): Promise<void> => {
     // Prepare messages to send
-    console.log("Sent message to LLM", messages);
     let response = ""
     // Call an API
-    console.log("MESSAGES SENT", messages.value)
     try {
       response = await invoke("send_messages_to_model", { messages: messages.value, modelName: "3.5-sonnet"});
     } catch (e) {
@@ -34,13 +32,11 @@ export const useMessageStore = defineStore('message', () => {
   }
 
   const changeWaitingStatus = () => {
-    console.log("Change status from ", isWaitingForResponse.value)
     if (isWaitingForResponse.value) {
       isWaitingForResponse.value = false
     } else {
       isWaitingForResponse.value = true 
     }
-    console.log("Change status to ", isWaitingForResponse.value)
   }
 
   return {messages, userMessages, addMessage, sendMessages, removeMessage, isWaitingForResponse, changeWaitingStatus}

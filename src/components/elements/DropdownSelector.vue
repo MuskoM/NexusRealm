@@ -8,7 +8,7 @@ const emit = defineEmits(["selected"])
 const selection = ref<string>(props.default ? props.default : "");
 
 const selected = async () => {
-    emit("selected", selection)
+    emit("selected", selection.value)
 }
 
 </script>
@@ -20,7 +20,7 @@ const selected = async () => {
 
 <style scoped>
 .role-selector {
-    @apply text-white bg-stone-700 pl-1;
+    @apply text-white bg-stone-700 rounded-md shadow-inner shadow-stone-500;
 }
 
 select {
