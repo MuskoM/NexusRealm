@@ -14,12 +14,11 @@ const sideBarRef = ref()
 
 const openSidebar = async () => {
   sideBarRef.value.changeSidebarState()
+  console.log(selectedModel,selectedProvider)
 }
 
-const modelSelected = ref("");
-const onModelSelected = async (selection: string) => {
-  modelSelected.value = selection
-}
+const selectedModel = ref("");
+const selectedProvider = ref("");
 
 </script>
 
@@ -33,6 +32,7 @@ const onModelSelected = async (selection: string) => {
       <QueryInput></QueryInput>
     </div>
     <Sidebar ref="sideBarRef">
+      <!-- Select defaults here-->
       <ModelSelector/>
     </Sidebar>
   </div>

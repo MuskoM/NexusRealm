@@ -1,13 +1,16 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import {ref, computed} from 'vue';
 import {defineStore} from 'pinia';
-import {type Message} from '../types/messaging.ts'
+import {Providers, type Message} from '../types/messaging.ts'
+import { useModelStore } from "./modelStore.ts";
+import { submitMessages } from "../lib/api/messaging.ts";
 
 export const useMessageStore = defineStore('message', () => {
   const messages = ref<Message[]>([
   ])
   const isWaitingForResponse = ref<boolean>(false);
   const userMessages = computed(()=> messages.value.filter(msg=>msg.role === 'user'))
+  const modelStore = useModelStore()
 
   const addMessage = async (msgType: 'user' | 'system' | 'assistant', text: string) => {
     messages.value.push({sentOn: new Date(), role: msgType, content: text})
@@ -18,7 +21,12 @@ export const useMessageStore = defineStore('message', () => {
     let response = ""
     // Call an API
     try {
-      response = await invoke("send_messages_to_model", { messages: messages.value, modelName: "3.5-sonnet"});
+      if (modelStore.selectedModel?.provider === Providers.Anthropic)
+        response = await invoke("send_messages_to_model", { messages: messages.value, modelName: ""});
+      else {
+        if (modelStore.selectedModel)
+          response = await submitMessages(messages.value, modelStore.selectedModel)
+      }
     } catch (e) {
       response = "No response from model"
       console.error(e)

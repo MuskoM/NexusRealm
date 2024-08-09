@@ -10,12 +10,14 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.25.1",
     "@remixicon/vue": "^4.2.0",
     "@tauri-apps/api": "^1",
     "@types/markdown-it": "^14.1.2",
     "axios": "^1.7.3",
     "markdown-it": "^14.1.0",
     "markdown-it-highlightjs": "^4.1.0",
+    "openai": "^4.55.3",
     "pinia": "^2.2.0",
     "remixicon": "^4.3.0",
     "vue": "^3.3.4",

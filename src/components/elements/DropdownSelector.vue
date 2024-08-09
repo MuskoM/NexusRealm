@@ -1,20 +1,18 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-const props = defineProps<{
-    default?: string
-}>()
+const props = defineProps({
+    modelValue: String,
+    options: {
+        type: Array<{value: string, label: string}>,
+        default: () => [],
+    }
+})
 
-const emit = defineEmits(["selected"])
-const selection = ref<string>(props.default ? props.default : "");
-
-const selected = async () => {
-    emit("selected", selection.value)
-}
+const emit = defineEmits(["update:modelValue"])
 
 </script>
 <template>
-    <select @change="selected" v-model="selection" class="role-selector">
-        <slot></slot>
+    <select @change="e=>emit('update:modelValue',(e.target as HTMLSelectElement).value)" :value="props.modelValue" class="role-selector">
+        <option v-for="option in props.options" :key="option.value" :value="option.value">{{ option.label }}</option>
     </select>
 </template>
 

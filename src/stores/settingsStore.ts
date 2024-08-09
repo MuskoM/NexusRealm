@@ -5,9 +5,9 @@ import { invoke } from '@tauri-apps/api';
 
 export const useSettingsStore = defineStore('settings', () => {
   const settings = ref<AppSettings>({
-    ApiKeys: {
+    apiKeys: {
       anthropic: "",
-      openAI: "",
+      openAi: "",
       customApi: "",
       local: "",
     },

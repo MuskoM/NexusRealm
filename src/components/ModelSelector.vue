@@ -1,46 +1,40 @@
 <script lang="ts" setup>
-import { onBeforeMount, ref } from 'vue';
-
+import { computed, ref, watch } from 'vue';
+import { useModelStore } from '../stores/modelStore';
+import { Providers } from '../types/messaging';
 import DropdownSelector from './elements/DropdownSelector.vue';
-import { useSettingsStore } from '../stores/settingsStore';
 
-import axios from 'axios';
+const modelStore = useModelStore()
 
-const settingsStore = useSettingsStore()
-const defaultOpenAiModel = 'gpt-4o-mini'
-const modelProviders = ["OpenAI", "Anthropic", "Local"]
-const availableModels = ref<Array<string>>([])
+const selectedProvider = ref<Providers>(Providers.OpenAi);
+const modelsToSelect = computed(()=>modelStore.availableModels.filter(model=>model.provider == selectedProvider.value))
+const selectedModel = ref<string>("");
 
-onBeforeMount(async ()=>{
-    await settingsStore.readSettings()
-    try {
-    const response = await axios.get("https://api.openai.com/v1/models", {
-            headers: {
-                'Authorization': `Bearer ${settingsStore.settings.apiKeys.openAi}`
-            }
-        })
-    const models: Array<{id:string}> = response.data.data
-    availableModels.value = models.filter(m=>m.id.startsWith('gpt')).map(m=>m.id).sort()
-    } catch (e) {
-        console.error("Unable to fetch available models", e)
-    }
-    
+// Watch for changes in selectedProvider
+watch(selectedProvider, () => {
+  // Filter models for the new provider
+  const availableModels = modelsToSelect.value;
+  
+  // Set the first model as default, if available
+  if (availableModels.length > 0) {
+    selectedModel.value = availableModels[0].value;
+  } else {
+    selectedModel.value = ""; // Reset if no models available
+  }
+}, { immediate: true }); // Immediate: true ensures it runs on component creation
+
+watch(selectedModel, (newModel) => {
+    modelStore.selectModel(newModel)
 })
 
 </script>
 
 <template>
     <label>Provider</label>
-    <DropdownSelector class="selector" :default="modelProviders[0]">
-        <option v-for="provider in modelProviders">
-            {{ provider }}
-        </option>
+    <DropdownSelector class="selector" v-model="selectedProvider" :options="Object.values(Providers).map(p=>{return {label:p, value:p}})">
     </DropdownSelector>
     <label>Model</label>
-    <DropdownSelector class="selector" :default="defaultOpenAiModel">
-        <option v-for="model in availableModels">
-            {{ model }}
-        </option>
+    <DropdownSelector class="selector" v-model="selectedModel" :options="modelsToSelect.map(m=>{return{ label: m.label, value: m.value }})"  >
     </DropdownSelector>
 </template>
 
