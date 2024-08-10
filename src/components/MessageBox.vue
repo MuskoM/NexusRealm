@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import {useMessageStore} from '../stores/messageStore.ts'
+import { useModelStore } from '../stores/modelStore.ts';
+import { Providers } from '../types/messaging.ts';
 import Button from './elements/Button.vue';
 
 const messaging = useMessageStore()
+const models = useModelStore()
 const props = defineProps<{
     messageType: string
     msgId: number
@@ -18,7 +21,7 @@ const removeMessageFromList = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col outer">
+    <div :class="['flex flex-col outer', models.selectedModel?.provider === Providers.Anthropic ? 'outer-anthropic' : 'outer-open-ai'] ">
         <div class="info-bar">
             <div class="message-type-box">
                 {{ props.messageType }}
@@ -33,7 +36,15 @@ const removeMessageFromList = async () => {
 
 <style scoped>
 .outer {
-    @apply w-full shadow-md shadow-purple-900 mb-1 p-1 pt-3;
+    @apply w-full shadow-md mb-1 p-1 pt-3;
+}
+
+.outer-open-ai {
+    @apply shadow-green-800
+}
+
+.outer-anthropic {
+    @apply shadow-amber-800;
 }
 
 .text-wrapper {

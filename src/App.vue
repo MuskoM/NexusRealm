@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Button from './components/elements/Button.vue';
 import { RouterLink, RouterView } from 'vue-router';
+import NotificationHandler from './components/NotificationHandler.vue';
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import { RouterLink, RouterView } from 'vue-router';
     <div class="ability">
       <RouterView/>
     </div>
+    <NotificationHandler/>
   </div>
 
 </template>

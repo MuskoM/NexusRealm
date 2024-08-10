@@ -29,7 +29,7 @@ const selectedProvider = ref("");
       <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
         {{ msg.content }}
       </MessageBox>
-      <QueryInput></QueryInput>
+      <QueryInput class="mt-4"></QueryInput>
     </div>
     <Sidebar ref="sideBarRef">
       <!-- Select defaults here-->
