@@ -8,17 +8,15 @@ import NotificationHandler from './components/NotificationHandler.vue';
   <div class="app-body">
     <div class="router-wrapper">
       <div class="ability-router">
-        <RouterLink to="/"><Button class="my-2" :background="true"><img width="64px" height="64px" src="./assets/feather.svg" /></Button></RouterLink>
-        <RouterLink to="/"><Button class="my-2" :background="true"><img width="64px" height="64px" src="./assets/feather.svg" /></Button></RouterLink>
-        <RouterLink to="/"><Button class="my-2" :background="true"><img width="64px" height="64px" src="./assets/feather.svg" /></Button></RouterLink>
-        <RouterLink to="/"><Button class="my-2" :background="true"><img width="64px" height="64px" src="./assets/feather.svg" /></Button></RouterLink>
+        <RouterLink to="/"><Button class="my-2 flex-1 w-full" :background="true">Sandbox</Button></RouterLink>
+        <RouterLink to="/chat"><Button class="my-2 w-full" :background="true">Chat</Button></RouterLink>
       </div>
       <div class="router-footer">
         <RouterLink to="/settings"><Button class="my-2" :background="false"><i class="ri-settings-3-line ri-xl" /></Button></RouterLink>
       </div>
     </div>
     <div class="ability">
-      <RouterView/>
+        <router-view/>
     </div>
     <NotificationHandler/>
   </div>

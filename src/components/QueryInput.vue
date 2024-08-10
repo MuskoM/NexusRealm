@@ -7,6 +7,10 @@ import Spinner from './elements/Spinner.vue';
 import { Providers } from '../types/messaging.ts';
 import { notify } from '../lib/appNotifications.ts';
 
+const props = defineProps<{
+  inputType: "chat" | "sandbox"
+}>()
+
 const messaging = useMessageStore()
 const models = useModelStore()
 const userMsgField = ref("")
@@ -46,7 +50,7 @@ const add_message = async () => {
     <div class="msg-controls">
       <Button :background="true" @click="add_message" class="px-2 py-1.5 rounded-l-lg"><i
           class="ri-play-list-add-line ri-lg" /></Button>
-      <select v-model="selectedRole" class="role-selector">
+      <select v-if="props.inputType === 'sandbox'" v-model="selectedRole" class="role-selector">
         <option value="system">System</option>
         <option value="assistant">Assistant</option>
         <option selected value="user">User</option>
