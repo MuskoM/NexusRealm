@@ -1,9 +1,8 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import {ref, computed} from 'vue';
 import {defineStore} from 'pinia';
-import {Providers, type Message} from '../types/messaging.ts'
+import {type Message} from '../types/messaging.ts'
 import { useModelStore } from "./modelStore.ts";
-import { submitMessages } from "../lib/api/messaging.ts";
 
 export const useMessageStore = defineStore('message', () => {
   const messages = ref<Message[]>([
@@ -21,12 +20,7 @@ export const useMessageStore = defineStore('message', () => {
     let response = ""
     // Call an API
     try {
-      if (modelStore.selectedModel?.provider === Providers.Anthropic)
-        response = await invoke("send_messages_to_model", { messages: messages.value, modelName: ""});
-      else {
-        if (modelStore.selectedModel)
-          response = await submitMessages(messages.value, modelStore.selectedModel)
-      }
+        response = await invoke("send_messages_to_model", { messages: messages.value, model: modelStore.selectModel});
     } catch (e) {
       response = "No response from model"
       console.error(e)

@@ -1,17 +1,27 @@
 use serde_json::json;
 
-use crate::models::messaging::{self as msg, AnthropicMessage, MessageType};
+use crate::models::{messaging::{self as msg, AiModel, AnthropicMessage, MessageType, Providers}};
 
 #[tauri::command]
 pub async fn send_messages_to_model(
     messages: Vec<msg::Message>,
-    model_name: Option<String>,
+    model: AiModel,
 ) -> Result<String, String> {
     let api_key: String = std::env::var("ANTHROPIC_API_KEY").unwrap_or_else(|_| {
         eprintln!("ANTHROPIC_API_KEY not set in environment");
         std::process::exit(1);
     });
-    println!("{:?}", messages);
+
+    let provider = match model.provider {
+        Providers::Anthropic => {
+            //Execute send for Anthropic
+            "Hello"
+        },
+        Providers::OpenAi => {
+            //Execute send for OpenAi
+            "Bye"
+        }
+    };
 
     let client = reqwest::Client::new();
     let response = client.post("https://api.anthropic.com/v1/messages")

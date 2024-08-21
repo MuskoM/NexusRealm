@@ -39,7 +39,7 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             api::model_api::send_messages_to_model,
-            api::system_api::bring_app_to_foreground,
+            // api::system_api::bring_app_to_foreground,
             api::settings_api::read_settings,
             api::settings_api::save_settings,
         ])

@@ -18,8 +18,9 @@ export const useSettingsStore = defineStore('settings', () => {
     settings.value = loaded_settings as AppSettings
   }
 
-  const saveSettings = async () => {
-    const settings_saved = invoke("");
+  const saveSettings = async (): Promise<void> => {
+    await invoke("save_settings", {settings: settings.value})
   }
+
   return {settings, readSettings, saveSettings}
 });

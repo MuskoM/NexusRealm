@@ -6,7 +6,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div :class="['toast', `${level}`]"><slot/></div>
+    <div :class="['toast', `${props.level}`]"><slot/></div>
 </template>
 
 <style scoped>

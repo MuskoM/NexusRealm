@@ -85,10 +85,6 @@ impl AnthropicResponse {
     pub fn get_message(&self) -> String {
         self.content[0].text.clone()
     }
-
-    pub fn tokens_used(&self) -> u64 {
-        (self.usage.input_tokens + self.usage.output_tokens).into()
-    }
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
@@ -102,4 +98,25 @@ struct AnthropicContent {
     #[serde(rename = "type")]
     pub conten_type: String,
     pub text: String
+}
+
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+pub enum Providers {
+    OpenAi,
+    Anthropic,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+struct Capabilities {
+   multimodal: bool,
+   function_calling: bool
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+pub struct AiModel {
+    pub label: String,
+    pub value: String,
+    pub provider: Providers,
+    capabilities: Capabilities
 }

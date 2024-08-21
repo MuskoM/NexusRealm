@@ -1,34 +1,49 @@
+use core::panic;
 use std::fs;
-extern crate yaml_rust;
-use yaml_rust::YamlLoader;
 
 use crate::models::settings::{ApiKeys, AppSettings};
 
+const SETTINGS_RESOURCE: &'static str = "settings.yaml";
+
 #[tauri::command]
 pub fn read_settings(handle: tauri::AppHandle) -> AppSettings {
-    let resoure_path = handle.path_resolver()
-        .resolve_resource("settings.yaml")
-        .expect("failed to resolve resource");
-    let settings_str = match fs::read_to_string(resoure_path) {
+    let default_key_value = "No key".to_string();
+    let default_settings = AppSettings {
+        api_keys: ApiKeys {
+            anthropic: default_key_value.clone(), 
+            open_ai: default_key_value.clone(),
+            local: default_key_value.clone(),
+            custom_api: default_key_value.clone()
+        }
+    };
+    // Open file from app directory
+    let app_dir = handle.path_resolver().app_config_dir().unwrap();
+    let settings_str = match fs::read_to_string(app_dir.join(SETTINGS_RESOURCE)) {
         Ok(string) => string,
-        Err(_err) => panic!("Unable to read file")
+        Err(_err) => serde_yml::to_string(&default_settings).unwrap()
     };
-    let yaml_docs = YamlLoader::load_from_str(settings_str.as_str());
-    let settings = match &yaml_docs {
-        Ok(yaml_result) => &yaml_result[0],
-        Err(_err) => panic!("Unable to load settings file")
-    };
-    let keys_from_file = &settings["app_settings"]["api_keys"];
-    println!("{:?}", keys_from_file);
-    let api_keys = ApiKeys{
-        open_ai: keys_from_file["open_ai"].as_str().unwrap_or("").to_string(),
-        anthropic: keys_from_file["anthropic"].as_str().unwrap_or("").to_string(),
-        local: keys_from_file["local"].as_str().unwrap_or("").to_string(),
-        custom_api: keys_from_file["custom_api"].as_str().unwrap_or("").to_string()};
-    AppSettings{api_keys: api_keys }
+
+    let yaml = serde_yml::from_str(&settings_str);
+    match yaml {
+        Ok(result) => result,
+        Err(err) => {
+            println!("Unable to parse yaml file {}", err);
+            default_settings
+        }
+    }
 }
 
 #[tauri::command]
-pub fn save_settings(){
+pub fn save_settings(handle: tauri::AppHandle, settings: AppSettings) {
+    let app_dir = handle.path_resolver().app_config_dir().unwrap();
+    let settings_string = serde_yml::to_string(&settings).unwrap_or_else(|e| {e.to_string()});
 
+    if !app_dir.exists() {
+        fs::create_dir(&app_dir).unwrap_or_else(|_e| {panic!("Unable to create directory, check your permissions.")})
+    }
+
+    match fs::write(app_dir.join(SETTINGS_RESOURCE), settings_string) {
+        Ok(..) => println!("Saved settings"),
+        Err(e) => panic!("Error when saving settings to file: {}", e.to_string())
+    };
 }

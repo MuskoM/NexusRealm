@@ -12,7 +12,11 @@
   "tauri": {
     "allowlist": {
       "fs": {
-        "scope": ["$RESOURCE/*"]
+        "all": true,
+        "scope": ["$APPCONFIG", "$APPCONFIG/*"]
+      },
+      "path": {
+        "all": true
       },
       "all": false,
       "window": {
@@ -79,7 +83,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "com.tauri.sam-nvi0",
       "resources": [
         "settings.yaml"
       ],

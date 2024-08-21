@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const removeMessageFromList = async () => {
     try {
-        let removed = await messaging.removeMessage(props.msgId)
+        await messaging.removeMessage(props.msgId)
     } catch (e) {
         console.error("Unable to delete message with id", props.msgId)
     }
