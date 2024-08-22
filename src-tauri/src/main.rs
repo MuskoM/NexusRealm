@@ -4,6 +4,8 @@
 mod api;
 mod models;
 mod tray;
+mod modules;
+mod constants;
 
 use tauri::{Manager, SystemTrayEvent};
 
