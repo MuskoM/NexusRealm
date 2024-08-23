@@ -1,46 +1,79 @@
 use serde_json::json;
 
-use crate::models::{messaging::{self as msg, AiModel, AnthropicMessage, MessageType, Providers}};
+use crate::models::messaging::{self as msg, AiModel, AnthropicMessage, MessageType, OpenAiChatResponse, Providers};
+use crate::modules::app_settings::{self, get_settings};
+
+fn handle_error_response(e: reqwest::Error) -> String {
+    tracing::error!("{}", e);
+    format!("{}", e)
+}
+
+pub async fn anthropic_send_messages(messages: Vec<msg::Message>, model: AiModel) -> Result<String, String> {
+    let anthropic_api_key = get_settings().api_keys.anthropic;
+    let client = reqwest::Client::new();
+
+    tracing::debug!("Building a request(key={}, model={:?}, messages={:?})", anthropic_api_key, model, messages);
+    let response = client.post("https://api.anthropic.com/v1/messages")
+        .header("x-api-key", anthropic_api_key)
+        .header("anthropic-version", "2023-06-01")
+        .header("content-type", "application/json")
+        .json(&json!({
+            "model": model.value,
+            "max_tokens": 1024,
+            "messages": messages.iter().filter(|x| x.role != MessageType::System).map(|x| AnthropicMessage::from(x)).collect::<Vec<_>>()
+        }))
+        .send()
+        .await
+        .map_err(handle_error_response)?;
+
+    tracing::debug!("Recieved response from Anthropic {:?}", response);
+    let body = response
+        .json::<msg::AnthropicChatResponse>()
+        .await
+        .map_err(handle_error_response)?;
+
+    Ok(body.get_message())
+}
+
+pub async fn open_ai_send_messages(messages: Vec<msg::Message>, model: AiModel) -> Result<String, String> {
+    let open_ai_api_key = app_settings::get_settings().api_keys.open_ai;
+    let client = reqwest::Client::new();
+
+    tracing::debug!("Building a request(key={}, model={:?}, messages={:?})",open_ai_api_key, model, messages);
+    let response = client.post("https://api.openai.com/v1/chat/completions")
+        .header("content-typ", "application/json")
+        .header("authorization", format!("Bearer {}", open_ai_api_key)) 
+        .json(&json!({
+            "model": model.value,
+            "messages": messages
+        }))
+        .send()
+        .await
+        .map_err(handle_error_response)?;
+
+    let body = response
+        .json::<OpenAiChatResponse>()
+        .await
+        .map_err(handle_error_response)?;
+
+    Ok(body.get_message())
+}
 
 #[tauri::command]
 pub async fn send_messages_to_model(
     messages: Vec<msg::Message>,
     model: AiModel,
 ) -> Result<String, String> {
-    let api_key: String = std::env::var("ANTHROPIC_API_KEY").unwrap_or_else(|_| {
-        eprintln!("ANTHROPIC_API_KEY not set in environment");
-        std::process::exit(1);
-    });
 
-    let provider = match model.provider {
+    let model_output = match model.provider {
         Providers::Anthropic => {
             //Execute send for Anthropic
-            "Hello"
+            anthropic_send_messages(messages, model).await?
         },
         Providers::OpenAi => {
             //Execute send for OpenAi
-            "Bye"
+            open_ai_send_messages(messages, model).await?
         }
     };
-
-    let client = reqwest::Client::new();
-    let response = client.post("https://api.anthropic.com/v1/messages")
-        .header("x-api-key", api_key)
-        .header("anthropic-version", "2023-06-01")
-        .header("content-type", "application/json")
-        .json(&json!({
-            "model": "claude-3-5-sonnet-20240620",
-            "max_tokens": 1024,
-            "messages": messages.iter().filter(|x| x.role != MessageType::System).map(|x| AnthropicMessage::from(x)).collect::<Vec<_>>()
-        }))
-        .send()
-        .await
-        .map_err(|e| e.to_string())?;
-
-    let body = response
-        .json::<msg::AnthropicResponse>()
-        .await
-        .map_err(|e| e.to_string())?;
-
-    Ok(body.get_message())
+    Ok(model_output)
 }

@@ -70,7 +70,7 @@ impl fmt::Display for MessageType {
 
 // Response structs from models
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-pub struct AnthropicResponse {
+pub struct AnthropicChatResponse {
     id: String,
     #[serde(rename = "type")]
     pub msg_type: String,
@@ -81,7 +81,7 @@ pub struct AnthropicResponse {
     content: Vec<AnthropicContent>
 }
 
-impl AnthropicResponse {
+impl AnthropicChatResponse {
     pub fn get_message(&self) -> String {
         self.content[0].text.clone()
     }
@@ -118,5 +118,45 @@ pub struct AiModel {
     pub label: String,
     pub value: String,
     pub provider: Providers,
-    capabilities: Capabilities
+    // capabilities: Capabilities
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct OpenAiChatResponse {
+    id: String,
+    object: String,
+    created: u64,
+    pub model: String,
+    system_fingerprint: String,
+    choices: Vec<Choice>,
+    pub usage: Usage,
+}
+
+impl OpenAiChatResponse {
+    pub fn get_message(&self) -> String {
+        self.choices.iter().map(|choice| {
+            choice.message.content.clone()
+        }).collect::<Vec<String>>().join(" ")
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+struct Choice {
+    index: u32,
+    message: ModelMessage,
+    logprobs: Option<serde_json::Value>,
+    finish_reason: String,
+}
+
+#[derive(Serialize, Deserialize)]
+struct ModelMessage {
+    role: String,
+    content: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Usage {
+    pub prompt_tokens: u32,
+    pub completion_tokens: u32,
+    pub total_tokens: u32,
 }

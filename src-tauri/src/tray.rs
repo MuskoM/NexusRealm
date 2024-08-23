@@ -6,5 +6,6 @@ pub fn initialize_tray() -> SystemTray {
     let tray_menu = SystemTrayMenu::new()
         .add_item(quit)
         .add_native_item(SystemTrayMenuItem::Separator);
+    tracing::trace!("Initalized tray menu");
     SystemTray::new().with_menu(tray_menu)
 }

@@ -8,9 +8,9 @@ mod modules;
 mod constants;
 
 use tauri::{Manager, SystemTrayEvent};
+use tracing_subscriber;
 
 use crate::tray::initialize_tray;
-
 fn main() {
     tauri::Builder::default()
         .on_window_event(|event| match event.event() {
@@ -19,6 +19,11 @@ fn main() {
                 api.prevent_close();
             }
             _ => {}
+        })
+        .setup(|_app| {
+            tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).init();
+            tracing::trace!("Setup hook run");
+            Ok(())
         })
         .system_tray(initialize_tray())
         .on_system_tray_event(|app, event| match event {
@@ -29,7 +34,7 @@ fn main() {
             } => {
                 let window = app.get_window("main").unwrap();
                 window.show().unwrap();
-                println!("Clicked")
+                tracing::info!("Clicked");
             }
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                 "quit" => {

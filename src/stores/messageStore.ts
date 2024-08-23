@@ -20,7 +20,7 @@ export const useMessageStore = defineStore('message', () => {
     let response = ""
     // Call an API
     try {
-        response = await invoke("send_messages_to_model", { messages: messages.value, model: modelStore.selectModel});
+        response = await invoke("send_messages_to_model", { messages: messages.value, model: modelStore.selectedModel});
     } catch (e) {
       response = "No response from model"
       console.error(e)
