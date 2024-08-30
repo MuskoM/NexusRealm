@@ -1,7 +1,8 @@
 import { createApp } from "vue"
 import { createPinia } from 'pinia'
 import App from "./App.vue"
-import './index.css'
+import './assets/styles/index.scss'
+import './assets/styles/markdown.scss'
 import 'remixicon/fonts/remixicon.css'
 
 import './lib/shortcuts.ts'

@@ -13,6 +13,6 @@ const emit = defineEmits(["update:modelValue"])
 
 <style scoped>
 input {
-    @apply bg-stone-700 rounded-md p-1.5;
+    @apply bg-surface rounded-md p-1.5;
 }
 </style>

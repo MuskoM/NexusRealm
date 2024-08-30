@@ -1,0 +1,73 @@
+
+.markdown-text {
+
+   p {
+      @apply mx-1.5
+   }
+   // Headings
+   h1 {
+      @apply text-markdown-heading text-5xl my-3;
+   }
+
+   h2 {
+
+      @apply text-markdown-heading text-4xl my-3;
+   }
+
+   h3 {
+
+      @apply text-markdown-heading text-3xl my-3;
+   }
+
+   h4 {
+
+      @apply text-markdown-heading text-2xl my-3;
+   }
+
+   h5 {
+      @apply text-markdown-heading text-xl my-3;
+   }
+
+   // Test emphasis
+   strong {
+      @apply font-bold text-markdown-bold;
+   }
+
+   em {
+      @apply font-semibold italic text-markdown-italics;
+   }
+
+   a {
+      @apply text-markdown-link font-semibold;
+   }
+
+   pre {
+
+      @apply bg-surface bg-opacity-30 p-1.5 rounded-lg m-1.5;
+
+      code {
+         @apply text-text font-mono
+      }
+
+   }
+
+   ol {
+      @apply list-decimal list-inside mx-3
+   }
+
+   ul {
+      @apply list-disc list-inside mx-3
+   }
+
+   table {
+      @apply ring-1 p-3;
+
+         th {
+            @apply p-3;
+         }
+
+         td {
+            @apply p-1 text-center;
+         }
+      }
+   }

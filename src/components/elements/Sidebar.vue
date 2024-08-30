@@ -24,7 +24,7 @@ defineExpose({ changeSidebarState })
 }
 
 .sidebar {
-    @apply w-0 h-full right-0 top-0 absolute bg-stone-800 transition-all duration-300 overflow-hidden shadow-md shadow-stone-600;
+    @apply w-0 h-full right-0 top-0 absolute bg-overlay transition-all duration-300 overflow-hidden shadow-md shadow-stone-600;
 }
 
 .sidebar-visible {

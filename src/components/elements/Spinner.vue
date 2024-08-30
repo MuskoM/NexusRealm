@@ -3,7 +3,7 @@
 
 <template>
 <div class="orbit-spinner">
-  <div class="orbit border-purple-400"></div>
+  <div class="orbit border-primary-500"></div>
   <div class="orbit"></div>
   <div class="orbit"></div>
 </div>

@@ -16,10 +16,10 @@
 
 <style scoped>
     button {
-        @apply transition-all duration-300 hover:text-purple-500 rounded-md; 
+        @apply transition-all duration-300 hover:text-primary rounded-md; 
     }
 
     .bg-button {
-        @apply bg-stone-800 shadow-sm shadow-stone-500 p-1.5 hover:shadow-md hover:shadow-purple-800; 
+        @apply bg-surface shadow-sm shadow-stone-500 p-1.5 hover:shadow-md hover:shadow-primary; 
     }
 </style>

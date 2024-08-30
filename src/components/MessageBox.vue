@@ -24,7 +24,7 @@ const removeMessageFromList = async () => {
 </script>
 
 <template>
-    <div :class="['outer', models.selectedModel?.provider === Providers.Anthropic ? 'outer-anthropic' : 'outer-open-ai'] ">
+    <div :class="['outer'] ">
         <div class="info-bar">
             <div class="message-type-box">
                 {{ props.messageType }}
@@ -37,15 +37,7 @@ const removeMessageFromList = async () => {
 
 <style scoped>
 .outer {
-    @apply flex flex-col w-full shadow-md mb-1 p-1 pt-3 rounded-md max-w-full;
-}
-
-.outer-open-ai {
-    @apply shadow-green-800
-}
-
-.outer-anthropic {
-    @apply shadow-amber-800;
+    @apply flex flex-col w-full mb-1 p-1 pt-3 max-w-full my-5;
 }
 
 .text-wrapper {
@@ -57,7 +49,7 @@ const removeMessageFromList = async () => {
 }
 
 .message-type-box {
-    @apply text-purple-200 capitalize font-thin;
+    @apply text-surface capitalize font-semibold font-mono border-2 border-surface p-1.5 opacity-80;
 }
 
 .close-btn {

@@ -25,7 +25,7 @@ import NotificationHandler from './components/NotificationHandler.vue';
 
 <style>
 .app-body {
-  @apply flex h-full flex-row justify-evenly bg-stone-800 text-white overflow-hidden max-w-full;
+  @apply flex h-full flex-row justify-evenly bg-background text-text overflow-hidden max-w-full;
 }
 
 .router-wrapper {

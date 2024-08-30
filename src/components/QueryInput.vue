@@ -14,6 +14,7 @@ const props = defineProps<{
 const messaging = useMessageStore()
 const models = useModelStore()
 const userMsgField = ref("")
+const textarea = ref(null)
 const selectedRole = ref<"system" | "user" | "assistant">("user");
 const selectedProvider = computed(() => {
   return models.selectedModel?.provider
@@ -28,26 +29,27 @@ const handleSubmit = async () => {
   await messaging.sendMessages()
   messaging.changeWaitingStatus()
 }
-
 const add_message = async () => {
-  if (selectedProvider.value === Providers.Anthropic && messaging.messages.find(m=>m.role === 'system')) {
-    await notify({level:"error", content: "Multiple System fields not allowed", visibleFor: 5000})  
+  if (selectedProvider.value === Providers.Anthropic && messaging.messages.find(m => m.role === 'system')) {
+    await notify({ level: "error", content: "Multiple System fields not allowed", visibleFor: 5000 })
     return
   }
   await messaging.addMessage(selectedRole.value, userMsgField.value)
   userMsgField.value = ""
 }
+const resizeTextArea = () => {
+  textarea.value.style.height = 'auto'
+  textarea.value.style.height = `${textarea.value.scrollHeight}px`
+}
 
 </script>
 <template>
-  <form class="relative" @submit.prevent="handleSubmit">
-    <textarea rows="4" v-model="userMsgField"
-      :class="['user-input', selectedProvider === Providers.Anthropic ? 'anthropic' : 'open-ai']"
+  <form class="user-input"
+    @submit.prevent="handleSubmit">
+    <textarea class="user-text" @input="resizeTextArea" rows="4" v-model="userMsgField" ref="textarea"
       placeholder="Ask your question..."></textarea>
-    <Button v-if="!messaging.isWaitingForResponse" class="submit-btn" type="submit"><i
-        class="ri-send-plane-2-line ri-xl" /></Button>
-    <Spinner v-else class="submit-btn w-6 h-6" />
     <div class="msg-controls">
+      <div class="ml-2 ring-2 p-2 rounded-md ring-stone-800">
       <Button :background="true" @click="add_message" class="px-2 py-1.5 rounded-l-lg"><i
           class="ri-play-list-add-line ri-lg" /></Button>
       <select v-if="props.inputType === 'sandbox'" v-model="selectedRole" class="role-selector">
@@ -55,6 +57,10 @@ const add_message = async () => {
         <option value="assistant">Assistant</option>
         <option selected value="user">User</option>
       </select>
+</div>
+      <Button v-if="!messaging.isWaitingForResponse" class="submit-btn" type="submit"><i
+          class="ri-send-plane-2-line ri-xl" /></Button>
+      <Spinner v-else class="submit-btn w-6 h-6" />
     </div>
   </form>
 </template>
@@ -62,27 +68,26 @@ const add_message = async () => {
 
 <style scoped>
 .user-input {
-  @apply resize-y w-full p-2 bg-stone-700 shadow-md rounded-lg focus:ring-0 focus:outline-none focus:shadow-xl transition-colors transition-shadow duration-300;
+  @apply flex flex-col w-full p-2 bg-overlay shadow-md rounded-lg;
 }
 
-.open-ai {
-  @apply shadow-green-600 focus:shadow-green-500;
-}
-
-.anthropic {
-  @apply shadow-amber-600 focus:shadow-amber-500;
+.user-text {
+  @apply bg-background  focus:shadow-primary 
+  focus:ring-0 focus:outline-none shadow-inner-unactive focus:shadow-inner-active
+  transition-colors transition-shadow duration-300
+  p-2;
 }
 
 .submit-btn {
-  @apply absolute bottom-5 right-5;
+  @apply mr-3
 }
 
 .role-selector {
-  @apply text-white bg-stone-700 pl-1;
+  @apply text-white bg-overlay pl-1 focus:text-primary transition-all duration-300;
 }
 
 .msg-controls {
-  @apply absolute bottom-5 left-5 rounded-lg border border-stone-500 shadow-inner shadow-sm;
+  @apply flex flex-row items-center justify-between my-3
 }
 
 select {

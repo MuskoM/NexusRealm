@@ -18,7 +18,7 @@ const emit = defineEmits(["update:modelValue"])
 
 <style scoped>
 .role-selector {
-    @apply text-white bg-stone-700 rounded-md shadow-inner shadow-stone-500;
+    @apply text-white bg-surface rounded-md shadow-md shadow-background;
 }
 
 select {
