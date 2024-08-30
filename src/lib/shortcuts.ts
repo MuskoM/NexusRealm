@@ -25,7 +25,10 @@ const send_clipboard_to_model = async () => {
   const content = await readText();
   if (content) {
     //Fix: Brutal fix for working with Anthropic models, remove at a later date
-    const nextRole = msgStore.messages[msgStore.messages.length - 1].role == 'user' ? 'assistant' : 'user'
+    let nextRole: "user" | "system" | "assistant" = "user"
+    if (msgStore.messages[msgStore.messages.length - 1 ])
+      nextRole = msgStore.messages[msgStore.messages.length - 1].role == 'user' ? 'assistant' : 'user'
+
     msgStore.addMessage(nextRole, content);
   }
   await msgStore.sendMessages();
