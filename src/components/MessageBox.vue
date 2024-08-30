@@ -1,12 +1,15 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import {useMessageStore} from '../stores/messageStore.ts'
 import { useModelStore } from '../stores/modelStore.ts';
 import { Providers } from '../types/messaging.ts';
 import Button from './elements/Button.vue';
+import MarkdownText from './elements/MarkdownText.vue';
 
 const messaging = useMessageStore()
 const models = useModelStore()
 const props = defineProps<{
+    message: string
     messageType: string
     msgId: number
 }>()
@@ -28,15 +31,13 @@ const removeMessageFromList = async () => {
             </div>
             <Button :background="true" @click="removeMessageFromList"><i class="ri-delete-bin-2-line"/></Button>
         </div>
-        <div class="text-wrapper">
-            <slot/>
-        </div>
+        <MarkdownText class="text-wrapper" :text="props.message"/>
     </div>
 </template>
 
 <style scoped>
 .outer {
-    @apply flex flex-col w-full shadow-md mb-1 p-1 pt-3 rounded-md;
+    @apply flex flex-col w-full shadow-md mb-1 p-1 pt-3 rounded-md max-w-full;
 }
 
 .outer-open-ai {

@@ -24,11 +24,9 @@ const selectedProvider = ref("");
 
 <template>
   <div class="flex flex-row">
-    <div class="flex-1 flex-col">
+    <div class="flex-1 max-w-full flex-col">
       <div class="ribbon"><Button @click="openSidebar"><i class="ri-settings-2-line" /></Button></div>
-      <MessageBox :messageType="msg.role" :key="key" :msgId="key" v-for="msg, key in messages">
-        {{ msg.content }}
-      </MessageBox>
+      <MessageBox :messageType="msg.role" :message="msg.content" :key="key" :msgId="key" v-for="msg, key in messages"/>
       <QueryInput inputType="sandbox" class="mt-4"></QueryInput>
     </div>
     <Sidebar ref="sideBarRef">
