@@ -5,12 +5,15 @@ import Sidebar from "../components/elements/Sidebar.vue"
 import QueryInput from "../components/QueryInput.vue"
 import { useMessageStore } from '../stores/messageStore.ts'
 import { Message } from "../types/messaging.ts";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import ModelSelector from "../components/ModelSelector.vue";
 
 const messaging = useMessageStore();
-const messages: Message[] = messaging.messages;
 const sideBarRef = ref()
+
+const messageList: Message[] = computed(()=>{
+  return messaging.messages.slice()
+})
 
 const openSidebar = async () => {
   sideBarRef.value.changeSidebarState()
@@ -23,17 +26,17 @@ const selectedProvider = ref("");
 </script>
 
 <template>
-  <div class="flex flex-row">
-    <div class="flex-1 max-w-full flex-col">
-      <div class="ribbon"><Button @click="openSidebar"><i class="ri-settings-2-line" /></Button></div>
-      <MessageBox :messageType="msg.role" :message="msg.content" :key="key" :msgId="key" v-for="msg, key in messages"/>
-      <QueryInput inputType="sandbox" class="mt-4"></QueryInput>
+  <div class="flex flex-col-reverse px-3">
+    <div class="ribbon"><Button @click="openSidebar"><i class="ri-settings-2-line" /></Button></div>
+    <QueryInput class="relative bottom-0" inputType="sandbox" ></QueryInput>
+    <div class="overflow-auto">
+      <MessageBox :messageType="msg.role" :message="msg.content" :key="key" :msgId="key" v-for="msg, key in messageList"/>
     </div>
-    <Sidebar ref="sideBarRef">
+  <Sidebar ref="sideBarRef">
       <ModelSelector/>
     </Sidebar>
   </div>
-</template>
+  </template>
 
 <style scoped>
 .ribbon {

@@ -1,73 +1,129 @@
-
 .markdown-text {
+  p {
+    @apply mx-1.5;
+  }
+  // Headings
+  h1 {
+    @apply text-markdown-heading text-5xl my-3;
+  }
 
-   p {
-      @apply mx-1.5
-   }
-   // Headings
-   h1 {
-      @apply text-markdown-heading text-5xl my-3;
-   }
+  h2 {
+    @apply text-markdown-heading text-4xl my-3;
+  }
 
-   h2 {
+  h3 {
+    @apply text-markdown-heading text-3xl my-3;
+  }
 
-      @apply text-markdown-heading text-4xl my-3;
-   }
+  h4 {
+    @apply text-markdown-heading text-2xl my-3;
+  }
 
-   h3 {
+  h5 {
+    @apply text-markdown-heading text-xl my-3;
+  }
 
-      @apply text-markdown-heading text-3xl my-3;
-   }
+  // Test emphasis
+  strong {
+    @apply font-bold text-markdown-bold;
+  }
 
-   h4 {
+  em {
+    @apply font-semibold italic text-markdown-italics;
+  }
 
-      @apply text-markdown-heading text-2xl my-3;
-   }
+  a {
+    @apply text-markdown-link font-semibold;
+  }
 
-   h5 {
-      @apply text-markdown-heading text-xl my-3;
-   }
+  pre {
+    @apply bg-surface bg-opacity-30 p-1.5 rounded-lg m-1.5;
 
-   // Test emphasis
-   strong {
-      @apply font-bold text-markdown-bold;
-   }
+    code {
+      @apply text-text font-mono;
+    }
+  }
 
-   em {
-      @apply font-semibold italic text-markdown-italics;
-   }
+  ol {
+    @apply list-decimal list-inside mx-3;
+  }
 
-   a {
-      @apply text-markdown-link font-semibold;
-   }
+  ul {
+    @apply list-disc list-inside mx-3;
+  }
 
-   pre {
+  table {
+    @apply ring-1 p-3;
 
-      @apply bg-surface bg-opacity-30 p-1.5 rounded-lg m-1.5;
+    th {
+      @apply p-3;
+    }
 
-      code {
-         @apply text-text font-mono
-      }
+    td {
+      @apply p-1 text-center;
+    }
+  }
 
-   }
+  // Code highlight
+  .hljs {
+   @apply p-3;
+    display: block;
+    overflow-x: auto;
+  }
 
-   ol {
-      @apply list-decimal list-inside mx-3
-   }
-
-   ul {
-      @apply list-disc list-inside mx-3
-   }
-
-   table {
-      @apply ring-1 p-3;
-
-         th {
-            @apply p-3;
-         }
-
-         td {
-            @apply p-1 text-center;
-         }
-      }
-   }
+  .hljs-keyword {
+    color: "#c6a0f6";
+  }
+  .hljs-built_in {
+    color: #ed8796;
+  }
+  .hljs-type {
+    color: #eed496;
+  }
+  .hljs-literal {
+    color: #8bd5ca;
+  }
+  .hljs-number {
+    color: #f5a97f;
+  }
+  .hljs-operator {
+    color: #91d7e3;
+  }
+  .hljs-punctuation {
+    color: #939ab7;
+  }
+  .hljs-property {
+    color: #8aadf4;
+  }
+  .hljs-regexp {
+    color: #f5bde6;;
+  }
+  .hljs-string {
+    color: #a6da95;;
+  }
+  .hljs-subst {
+    color: #f8f8f2;
+  }
+  .hljs-symbol {
+    color: #ed8796;
+  }
+  .hljs-class {
+    color: #eed496;
+  }
+  .hljs-function {
+    color: #8aadf4;
+  }
+  .hljs-variable {
+    color: #f5a97f;
+  }
+  .hljs-title {
+    color: #91d7e3;
+  }
+  .hljs-params {
+    color: #ee99a0;
+  }
+  .hljs-comment {
+    color: #939ab7;
+    font-style: italic;
+  }
+}

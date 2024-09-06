@@ -1,19 +1,28 @@
 <script lang="ts" setup>
-import {marked} from 'marked'
+import {Marked} from 'marked'
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
 import { computed } from 'vue';
 
 const renderOptions = {linkify: true, typographer: true,}
+
+const marked = new Marked(
+        markedHighlight({
+            langPrefix: 'hljs language-',
+            highlight(code, lang, info) {
+                const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                return hljs.highlight(code, {language}).value;
+            }
+        })
+    )
 
 const props = defineProps<{
     text: string
 }>()
 
 const formattedText = computed(()=> {
-    console.log(props.text)
-    const newText = marked(props.text)
-    console.log(newText)
-    return newText
-    })
+    return marked.parse(props.text)
+})
 </script>
 
 <template>
