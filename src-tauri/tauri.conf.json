@@ -22,12 +22,13 @@
       "window": {
         "all": false,
         "center": true,
-        "close": false,
-        "create": false,
+        "close": true,
+        "create": true,
         "hide": true,
-        "maximize": false,
-        "minimize": false,
-        "print": false,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "print": true,
         "requestUserAttention": false,
         "setAlwaysOnTop": false,
         "setCursorGrab": false,
@@ -35,18 +36,17 @@
         "setCursorPosition": false,
         "setCursorVisible": false,
         "setDecorations": false,
-        "setFocus": false,
-        "setFullscreen": false,
+        "setFocus": true,
+        "setFullscreen": true,
         "setIcon": false,
         "setIgnoreCursorEvents": false,
         "setMaxSize": false,
         "setMinSize": false,
         "setPosition": false,
         "setResizable": false,
-        "setSize": false,
+        "setSize": true,
         "setSkipTaskbar": false,
-        "setTitle": false,
-        "show": true,
+        "setTitle": true,
         "startDragging": false,
         "unmaximize": false,
         "unminimize": false
@@ -71,10 +71,13 @@
     "macOSPrivateApi": true,
     "windows": [
       {
-        "title": "S.A.M",
-        "titleBarStyle": "Transparent",
+        "title": "NexusRealm",
+        "transparent": true,
         "width": 800,
-        "height": 600
+        "height": 600,
+        "decorations": false,
+        "alwaysOnTop": false,
+        "center": true
       }
     ],
     "security": {

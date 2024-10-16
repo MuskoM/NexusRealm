@@ -2,10 +2,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod api;
-mod models;
-mod tray;
-mod modules;
 mod constants;
+mod models;
+mod modules;
+mod tray;
 
 use tauri::{Manager, SystemTrayEvent};
 use tracing_subscriber;
@@ -21,7 +21,9 @@ fn main() {
             _ => {}
         })
         .setup(|_app| {
-            tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).init();
+            tracing_subscriber::fmt()
+                .with_max_level(tracing::Level::DEBUG)
+                .init();
             tracing::trace!("Setup hook run");
             Ok(())
         })

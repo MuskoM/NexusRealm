@@ -5,11 +5,17 @@ import { registerShortcut } from '../lib/shortcuts'
 import { readText } from '@tauri-apps/api/clipboard';
 import { window } from '@tauri-apps/api';
 import { useMessageStore } from '../stores/messageStore';
+import { useAppStateStore } from './appStateStore';
 
 
 const bring_to_foreground_cmd = async () => {
+  console.log('Execute toggle')
+  const appStateStore = useAppStateStore()
   if (await window.appWindow.isVisible()) {
-    await window.appWindow.hide()
+    console.log('Try to toggle nexus')
+    const nexusState = appStateStore.isNexusVisible()
+    appStateStore.setPlainVisibility(nexusState)
+    appStateStore.setNexusVisibility(!nexusState)
   } else {
     await window.appWindow.show()
     await window.appWindow.setFocus()
@@ -33,7 +39,7 @@ const send_clipboard_to_model = async () => {
 
 export const useCommandStore = defineStore('command', () => {
   const commands = ref<Command[]>([
-    { title: 'Toggle Window Focus', category: Category.APP, shortcut: "CommandOrControl+Alt+;", handler: bring_to_foreground_cmd },
+    { title: 'Toggle Command Palette', category: Category.APP, shortcut: "CommandOrControl+K", handler: bring_to_foreground_cmd },
     { title: 'Send clipboard to model', category: Category.APP, shortcut: "CommandOrControl+Alt+'", handler: send_clipboard_to_model },
   ]
   )
