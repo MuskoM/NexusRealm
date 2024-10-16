@@ -15,6 +15,7 @@
     "@tauri-apps/api": "^1",
     "@types/markdown-it": "^14.1.2",
     "axios": "^1.7.3",
+    "fuse.js": "^7.0.0",
     "highlight.js": "^11.10.0",
     "markdown-it-highlightjs": "^4.1.0",
     "marked": "^14.1.0",

@@ -1,12 +1,14 @@
 import { createMemoryHistory, createRouter } from "vue-router"
-import Sandbox from "../views/Sandbox.vue"
-import Settings from "../views/Settings.vue"
-import Chat from "../views/Chat.vue"
+import HomeView from "../views/HomeView.vue"
+import SettingsView from "../views/SettingsView.vue"
+import WebhooksView from "../views/WebhooksView.vue"
+import AgentsView from "../views/AgentsView.vue"
 
 const routes = [
-    {path: '/', component: Sandbox},
-    {path: '/settings', component: Settings},
-    {path: '/chat', component: Chat}
+    { path: '/', component: HomeView },
+    { path: '/settings', component: SettingsView },
+    { path: '/webhooks', component: WebhooksView },
+    { path: '/agents', component: AgentsView },
 ]
 
 export const router = createRouter({

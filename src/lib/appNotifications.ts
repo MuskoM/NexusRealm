@@ -4,7 +4,7 @@ import { useNotificationStore } from "../stores/notificationStore";
 export const notify = async (notification: AppNotification) => {
     const appNotifications = useNotificationStore()
     appNotifications.addNotification(notification)
-    setTimeout(()=> {
+    setTimeout(() => {
         appNotifications.popNotification()
-    }, notification.visibleFor)
+    }, notification.visibleFor * 1000)
 }

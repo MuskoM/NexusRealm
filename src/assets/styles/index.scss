@@ -9,3 +9,7 @@
     scrollbar-color: #581c87 #292524;
     scrollbar-width: 1.5rem;
 } 
+
+input {
+    @apply bg-surface rounded-md p-1.5;
+}
