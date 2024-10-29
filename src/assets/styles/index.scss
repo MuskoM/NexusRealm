@@ -5,10 +5,28 @@
 
 #app {
     height: 100vh;
-    overflow: hidden;
-    scrollbar-color: #581c87 #292524;
-    scrollbar-width: 1.5rem;
+    // overflow: hidden;
+    // scrollbar-color: #98e20d #5b6078;
+    // scrollbar-width: 1.5rem;
 } 
+
+::-webkit-scrollbar {
+    width: 5px;
+    margin: 1px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #98e20d;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #98e20d
+}
 
 input {
     @apply bg-surface rounded-md p-1.5;

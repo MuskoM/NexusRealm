@@ -1,21 +1,34 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { window } from '@tauri-apps/api'
 
 export const useAppStateStore = defineStore('appState', () => {
-  const nexusVisible = ref(true)
-  const plainVisible = ref(false)
+  const nexusVisible = ref(false)
+  const appFocused = ref(true)
+  const nexusRef = ref()
+
+  const setAppFocused = (val: boolean) => { appFocused.value = val }
+
+  const isNexusVisible = () => nexusVisible.value
 
   const setNexusVisibility = (visible: boolean) => {
     nexusVisible.value = visible
   }
 
-  const isNexusVisible = () => nexusVisible.value
+  const isAppFocused = async () => await window.appWindow.isFocused()
 
-  const setPlainVisibility = (visible: boolean) => {
-    plainVisible.value = visible
+  const setAppFocus = async () => {
+    await window.appWindow.setFocus()
   }
 
-  const isPlainVisible = () => plainVisible.value
+  const isAppVisible = async () => await window.appWindow.isVisible()
 
-  return { isNexusVisible, setNexusVisibility, setPlainVisibility, isPlainVisible }
+  const setAppVisible = async (visible: boolean) => {
+    if (visible)
+      await window.appWindow.show()
+    else
+      await window.appWindow.hide()
+  }
+
+  return { nexusRef, isNexusVisible, setNexusVisibility, setAppFocus, isAppFocused, isAppVisible, setAppVisible, appFocused, setAppFocused }
 })

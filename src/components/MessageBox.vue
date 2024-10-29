@@ -1,37 +1,25 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import {useMessageStore} from '../stores/messageStore.ts'
-import { useModelStore } from '../stores/modelStore.ts';
-import { Providers } from '../types/messaging.ts';
+import { useAiRealmStore } from '../stores/realms/aiRealmStore'
 import Button from './elements/Button.vue';
 import MarkdownText from './elements/MarkdownText.vue';
 
-const messaging = useMessageStore()
-const models = useModelStore()
+const messaging = useAiRealmStore()
 const props = defineProps<{
     message: string
     messageType: string
     msgId: number
 }>()
 
-const removeMessageFromList = async () => {
-    try {
-        await messaging.removeMessage(props.msgId)
-    } catch (e) {
-        console.error("Unable to delete message with id", props.msgId)
-    }
-}
 </script>
 
 <template>
-    <div :class="['outer'] ">
+    <div :class="['outer']">
         <div class="info-bar">
             <div class="message-type-box">
                 {{ props.messageType }}
             </div>
-            <Button :background="true" @click="removeMessageFromList"><i class="ri-delete-bin-2-line"/></Button>
         </div>
-        <MarkdownText class="text-wrapper" :text="props.message"/>
+        <MarkdownText class="text-wrapper" :text="props.message" />
     </div>
 </template>
 
@@ -44,7 +32,7 @@ const removeMessageFromList = async () => {
     @apply m-2
 }
 
-.info-bar{
+.info-bar {
     @apply flex flex-row justify-between mr-4 ml-2;
 }
 

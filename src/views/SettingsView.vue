@@ -31,7 +31,7 @@ const setSettings = (apiKeys: ApiKeys) => {
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col p-4">
         <p class="text-4xl mb-2">Settings</p>
         <hr />
         <p class="text-xl mt-2 mb-4">API Keys</p>

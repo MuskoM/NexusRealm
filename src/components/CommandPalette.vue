@@ -1,10 +1,12 @@
 <script setup lang='ts'>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onUpdated, Ref } from "vue";
 import Fuse from 'fuse.js'
 import { useCommandStore } from "../stores/commandStore";
-import { Command } from "../types/command";
+import { Incantation } from "../types/incantation";
+import { useRouter } from "vue-router";
 
 const commandStore = useCommandStore()
+const router = useRouter()
 
 let fuse = new Fuse(commandStore.commands, { keys: ['title', 'aliases', 'category'] })
 
@@ -13,19 +15,25 @@ watch(commandStore.commands, () => {
 })
 
 const commandText = ref("")
-const input = ref()
+const commandInput = ref<HTMLInputElement>()
+
 const matchedCommands = computed(() => {
     return fuse.search(commandText.value).map(found => { return found.item })
 })
 
+onUpdated(() => {
+    setTimeout(() => commandInput.value!.focus(), 0)
+})
+
 const toggleFocus = () => {
-    setTimeout(() => input.value.focus(), 0)
+    setTimeout(() => commandInput.value!.focus(), 0)
 }
 
-const executeCommand = async (cmd: Command) => {
+const executeCommand = async (cmd: Incantation) => {
     commandText.value = ''
-    cmd.handler()
+    const output = cmd.handler(cmd.args, router)
     await commandStore.closeCommandPalette()
+    return output
 }
 
 defineExpose({ toggleFocus })
@@ -34,28 +42,34 @@ defineExpose({ toggleFocus })
 
 <template>
     <div class="wrapper">
-        <input ref="input" tabindex='0' class="command-input" type="search" placeholder="Input command here..."
-            v-model="commandText" />
-        <div v-if="commandText != ''" class="command-list">
-            <li @click="() => executeCommand(cmd)" class="command" v-for="cmd in matchedCommands">{{ cmd.title }}</li>
+        <input ref="commandInput" tabindex='0' :class="['command-input', commandText != '' ? 'rounded-b-none' : '']"
+            spellcheck="false" type="search" placeholder="Input command here..." v-model="commandText" />
+        <div v-if="commandText !== ''" class="command-list">
+            <button @click="() => executeCommand(cmd)" class="command" v-for="cmd in matchedCommands">{{
+                cmd.title
+            }}</button>
         </div>
     </div>
 </template>
 
 <style scoped>
 .wrapper {
-    @apply flex flex-col px-9
+    @apply flex flex-col px-9;
 }
 
 .command-input {
-    @apply rounded-b-none text-lg text-text
+    @apply text-lg text-text p-2 shadow-inner focus:outline-none focus:ring focus:ring-primary z-20 selection:bg-overlay;
 }
 
 .command-list {
-    @apply bg-overlay text-text p-3 rounded-b-md text-sm
+    @apply flex flex-col items-start bg-surface text-text p-3 shadow shadow-primary rounded-b-md text-sm z-10 shadow-lg;
+
+    button {
+        @apply hover:text-text hover:bg-secondary hover:bg-opacity-40;
+    }
 }
 
 .command {
-    @apply list-none hover:text-accent cursor-pointer
+    @apply w-full text-left p-1 hover:text-accent focus:outline-none focus:bg-secondary focus:bg-opacity-40;
 }
 </style>

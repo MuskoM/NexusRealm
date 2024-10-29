@@ -1,66 +1,62 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { Category, Command } from '../types/command'
+import { Incantation } from '../types/incantation'
 import { registerShortcut } from '../lib/shortcuts'
-import { readText } from '@tauri-apps/api/clipboard';
-import { window } from '@tauri-apps/api';
-import { useMessageStore } from '../stores/messageStore';
 import { useAppStateStore } from './appStateStore';
 
 
-const bring_to_foreground_cmd = async () => {
-  console.log('Execute toggle')
+const toggle_app = async () => {
   const appStateStore = useAppStateStore()
-  if (await window.appWindow.isVisible()) {
-    console.log('Try to toggle nexus')
-    const nexusState = appStateStore.isNexusVisible()
-    appStateStore.setPlainVisibility(nexusState)
-    appStateStore.setNexusVisibility(!nexusState)
+  // Check if on top
+  // Yes
+  if (await appStateStore.isAppVisible()) {
+    //Check if window is focused
+    if (await appStateStore.isAppFocused()) {
+      // Yes
+      await appStateStore.setAppVisible(false)
+      appStateStore.setNexusVisibility(false)
+    }
+    else {
+      // No
+      await appStateStore.setAppFocus()
+    }
+    // No
   } else {
-    await window.appWindow.show()
-    await window.appWindow.setFocus()
+    // Show app and set focus on it
+    await appStateStore.setAppVisible(true)
+    await appStateStore.setAppFocus()
   }
 }
 
-const send_clipboard_to_model = async () => {
-  const msgStore = useMessageStore();
-  const content = await readText();
-  if (content) {
-    //Fix: Brutal fix for working with Anthropic models, remove at a later date
-    let nextRole: "user" | "system" | "assistant" = "user"
-    if (msgStore.messages[msgStore.messages.length - 1])
-      nextRole = msgStore.messages[msgStore.messages.length - 1].role == 'user' ? 'assistant' : 'user'
-
-    msgStore.addMessage(nextRole, content);
-  }
-  await msgStore.sendMessages();
-  console.log("MESSAGE FROM CLIPBOARD: ", msgStore.messages)
+const toggle_nexus = async () => {
+  const appStateStore = useAppStateStore()
+  appStateStore.setNexusVisibility(!appStateStore.isNexusVisible())
 }
+
 
 export const useCommandStore = defineStore('command', () => {
-  const commands = ref<Command[]>([
-    { title: 'Toggle Command Palette', category: Category.APP, shortcut: "CommandOrControl+K", handler: bring_to_foreground_cmd },
-    { title: 'Send clipboard to model', category: Category.APP, shortcut: "CommandOrControl+Alt+'", handler: send_clipboard_to_model },
+  const commands = ref<Incantation[]>([
+    { title: 'Toggle Nexus', shortcut: "CommandOrControl+Shift+/", isGlobal: true, handler: toggle_nexus },
+    { title: 'Toggle Realm', shortcut: "CommandOrControl+Shift+k", isGlobal: true, handler: toggle_app },
   ]
   )
 
-  const registerCommand = async (command: Command) => {
+  const registerCommand = async (command: Incantation) => {
     console.log('Registered', command.title)
     if ('shortcut' in command)
       await registerShortcut(command)
     commands.value.push(command)
-    console.log(commands.value)
   }
 
   const closeCommandPalette = async () => {
-    const toggleCommand = commands.value.find(c => c.title === 'Toggle Command Palette')
+    const toggleCommand = commands.value.find(c => c.title === 'Toggle Nexus')
     if (toggleCommand)
       await toggleCommand.handler()
     else
       console.error('No toggle command registered')
   }
 
-  commands.value.forEach(async (command: Command) => registerShortcut(command));
+  commands.value.forEach(async (command: Incantation) => registerShortcut(command));
   return { commands, registerCommand, closeCommandPalette }
 })
 

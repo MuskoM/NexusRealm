@@ -1,14 +1,12 @@
 import { createMemoryHistory, createRouter } from "vue-router"
-import HomeView from "../views/HomeView.vue"
+import NexusRealm from "../views/NexusRealm.vue"
+import AiRealm from "../views/AiRealm.vue"
 import SettingsView from "../views/SettingsView.vue"
-import WebhooksView from "../views/WebhooksView.vue"
-import AgentsView from "../views/AgentsView.vue"
 
 const routes = [
-    { path: '/', component: HomeView },
+    { path: '/', component: NexusRealm },
+    { path: '/ai', component: AiRealm },
     { path: '/settings', component: SettingsView },
-    { path: '/webhooks', component: WebhooksView },
-    { path: '/agents', component: AgentsView },
 ]
 
 export const router = createRouter({

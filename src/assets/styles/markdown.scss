@@ -4,23 +4,27 @@
   }
   // Headings
   h1 {
-    @apply text-markdown-heading text-5xl my-3;
-  }
-
-  h2 {
-    @apply text-markdown-heading text-4xl my-3;
-  }
-
-  h3 {
     @apply text-markdown-heading text-3xl my-3;
   }
 
-  h4 {
+  h2 {
     @apply text-markdown-heading text-2xl my-3;
   }
 
-  h5 {
+  h3 {
     @apply text-markdown-heading text-xl my-3;
+  }
+
+  h4 {
+    @apply text-markdown-heading text-lg my-3;
+  }
+
+  h5 {
+    @apply text-markdown-heading text-base my-3;
+  }
+
+  h6 {
+    @apply text-markdown-heading text-sm my-3;
   }
 
   // Test emphasis
@@ -96,10 +100,10 @@
     color: #8aadf4;
   }
   .hljs-regexp {
-    color: #f5bde6;;
+    color: #f5bde6;
   }
   .hljs-string {
-    color: #a6da95;;
+    color: #a6da95;
   }
   .hljs-subst {
     color: #f8f8f2;
@@ -126,4 +130,19 @@
     color: #939ab7;
     font-style: italic;
   }
+
 }
+
+.hljs-punctuation {
+  color: #91d7e3;
+}
+.hljs-attr {
+  color: #ee99a0;
+}
+.hljs-string {
+  color: #a6da95;
+}
+.hljs-number {
+  color: #f5a97f;
+}
+

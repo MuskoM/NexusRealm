@@ -7,7 +7,6 @@ import 'remixicon/fonts/remixicon.css'
 
 import './lib/shortcuts.ts'
 
-import './stores/messageStore.ts'
 import { router } from "./routers/main.ts"
 
 const pinia = createPinia()

@@ -1,23 +1,17 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useMessageStore } from '../stores/messageStore.ts'
-import { useModelStore } from '../stores/modelStore.ts';
+import { useAiRealmStore } from '../stores/realms/aiRealmStore'
 import Button from './elements/Button.vue';
 import Spinner from './elements/Spinner.vue';
-import { Providers } from '../types/messaging.ts';
+import { Providers } from '../types/ai.ts';
 import { notify } from '../lib/appNotifications.ts';
 
-const props = defineProps<{
-  inputType: "chat" | "sandbox"
-}>()
-
-const messaging = useMessageStore()
-const models = useModelStore()
+const messaging = useAiRealmStore()
 const userMsgField = ref("")
 const textarea = ref(null)
 const selectedRole = ref<"system" | "user" | "assistant">("user");
 const selectedProvider = computed(() => {
-  return models.selectedModel?.provider
+  return Providers.OpenAi
 })
 
 const handleSubmit = async () => {
@@ -28,7 +22,14 @@ const handleSubmit = async () => {
   }
   await messaging.sendMessages()
   messaging.changeWaitingStatus()
+
 }
+
+const checkKey = (event) => {
+  if (event.ctrlKey && event.key === 'Enter')
+    handleSubmit()
+}
+
 const add_message = async () => {
   if (selectedProvider.value === Providers.Anthropic && messaging.messages.find(m => m.role === 'system')) {
     await notify({ level: "error", content: "Multiple System fields not allowed", visibleFor: 5000 })
@@ -44,20 +45,10 @@ const resizeTextArea = () => {
 
 </script>
 <template>
-  <form class="user-input"
-    @submit.prevent="handleSubmit">
-    <textarea class="user-text" @input="resizeTextArea" rows="4" v-model="userMsgField" ref="textarea"
-      placeholder="Ask your question..."></textarea>
+  <form class="user-input" @submit.prevent="handleSubmit">
+    <textarea class="user-text" @keydown="checkKey" @input="resizeTextArea" rows="4" v-model="userMsgField"
+      ref="textarea" placeholder="Ask your question..."></textarea>
     <div class="msg-controls">
-      <div class="ml-2 ring-2 p-2 rounded-md ring-stone-800">
-      <Button :background="true" @click="add_message" class="px-2 py-1.5 rounded-l-lg"><i
-          class="ri-play-list-add-line ri-lg" /></Button>
-      <select v-if="props.inputType === 'sandbox'" v-model="selectedRole" class="role-selector">
-        <option value="system">System</option>
-        <option value="assistant">Assistant</option>
-        <option selected value="user">User</option>
-      </select>
-</div>
       <Button v-if="!messaging.isWaitingForResponse" class="submit-btn" type="submit"><i
           class="ri-send-plane-2-line ri-xl" /></Button>
       <Spinner v-else class="submit-btn w-6 h-6" />
@@ -68,14 +59,11 @@ const resizeTextArea = () => {
 
 <style scoped>
 .user-input {
-  @apply flex flex-col w-full p-2 bg-overlay shadow-md rounded-lg;
+  @apply flex flex-col w-full rounded-b-lg border-t-2 border-primary bg-surface;
 }
 
 .user-text {
-  @apply bg-background  focus:shadow-primary 
-  focus:ring-0 focus:outline-none shadow-inner-unactive focus:shadow-inner-active
-  transition-colors transition-shadow duration-300
-  p-2;
+  @apply bg-background rounded-b-lg focus:shadow-primary focus:ring-0 focus:outline-none p-2;
 }
 
 .submit-btn {
@@ -87,7 +75,7 @@ const resizeTextArea = () => {
 }
 
 .msg-controls {
-  @apply flex flex-row items-center justify-between my-3
+  @apply absolute bottom-1 right-2 items-center justify-between my-3
 }
 
 select {
